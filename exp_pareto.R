@@ -1,7 +1,7 @@
 library(insuranceData)
 library(fitdistrplus)
 library(gendist)
-
+library(actuar)
 data(WorkersComp)
 
 data_test=WorkersComp$LOSS/1000000
@@ -30,13 +30,6 @@ loglik <- function(par) {
 ini=rbind(rate,shape,scale)
 zop_comp_test <- nlminb(ini,loglik , lower =c(0,0,0),upper =c(5,4,4))
 print(zop_comp_test)
-
-library(numDeriv)
-est <- zop_comp_test$par
-names(est) <- c("rate","shape","scale")
-hess<-hessian(loglik,est)
-se <-sqrt(diag(solve(hess)))
-print(cbind(est,se))
 
 rate=zop_comp_test$par[1]
 shape=zop_comp_test$par[2]
